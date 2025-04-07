@@ -140,7 +140,9 @@ const Page = () => {
             >
               <FiX size={20} />
             </button>
-            <h2 className="text-xl font-bold mb-4">Create New Post</h2>
+            <h2 className="text-xl text-white font-bold mb-4">
+              Create New Post
+            </h2>
             <input
               type="text"
               placeholder="Title"
@@ -148,7 +150,7 @@ const Page = () => {
               onChange={(e) =>
                 setNewPost({ ...newPost, title: e.target.value })
               }
-              className="w-full mb-3 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mb-3 px-4 py-2 text-white rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <textarea
               placeholder="Content"
@@ -156,7 +158,7 @@ const Page = () => {
               onChange={(e) =>
                 setNewPost({ ...newPost, content: e.target.value })
               }
-              className="w-full mb-3 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mb-3 px-4 py-2 text-white rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={4}
             />
             <select
@@ -164,12 +166,13 @@ const Page = () => {
               onChange={(e) =>
                 setNewPost({ ...newPost, topic: e.target.value })
               }
-              className="w-full mb-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mb-4 px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white text-gray-900 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select Topic</option>
               <option value="tech">Tech</option>
               <option value="lifestyle">Lifestyle</option>
             </select>
+
             <button
               onClick={handleAddPost}
               className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"

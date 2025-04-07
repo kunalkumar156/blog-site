@@ -1,103 +1,186 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+import { FiSun, FiMoon, FiPlus, FiX } from "react-icons/fi";
 
-export default function Home() {
+interface Post {
+  title: string;
+  content: string;
+  topic: string;
+}
+
+const Page = () => {
+  const defaultPosts: Post[] = [
+    { title: "Post 1", content: "Exploring new tech trends", topic: "tech" },
+    { title: "Post 2", content: "Healthy morning habits", topic: "lifestyle" },
+    { title: "Post 3", content: "Why TypeScript rocks", topic: "tech" },
+  ];
+
+  const [posts, setPosts] = useState<Post[]>(defaultPosts);
+  const [featuredPosts] = useState<Post[]>(defaultPosts.slice(0, 3));
+  const [topic, setTopic] = useState("");
+  const [darkMode, setDarkMode] = useState(false);
+  const [newPost, setNewPost] = useState({ title: "", content: "", topic: "" });
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleAddPost = () => {
+    if (newPost.title && newPost.content && newPost.topic) {
+      setPosts([...posts, newPost]);
+      setNewPost({ title: "", content: "", topic: "" });
+      setIsOpen(false);
+    }
+  };
+
+  const handleFilter = (topic: string) => {
+    setTopic(topic);
+    if (topic) {
+      setPosts(defaultPosts.filter((post) => post.topic === topic));
+    } else {
+      setPosts(defaultPosts);
+    }
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div
+      className={`${
+        darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
+      } min-h-screen transition-colors duration-300`}
+    >
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold tracking-tight">📝 My Blog</h1>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="p-2 rounded-full text-white bg-gray-200 dark:bg-gray-700 hover:scale-105 transition"
+              aria-label="Toggle Theme"
+            >
+              {darkMode ? <FiSun size={18} /> : <FiMoon size={18} />}
+            </button>
+            <button
+              onClick={() => setIsOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+            >
+              <FiPlus /> Add Post
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Featured */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">🌟 Featured Posts</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredPosts.map((post, i) => (
+              <div
+                key={i}
+                className="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md border dark:border-gray-700"
+              >
+                <h3 className="text-lg text-white font-semibold mb-2">
+                  {post.title}
+                </h3>
+                <p className="text-white ">{post.content}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Filter */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">🧠 Filter by Topic</h2>
+          <div className="flex gap-3 flex-wrap">
+            {["tech", "lifestyle", ""].map((t, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleFilter(t)}
+                className={`px-4 py-2 rounded-full border ${
+                  topic === t
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 dark:bg-gray-700 dark:text-white"
+                } hover:scale-105 transition`}
+              >
+                {t ? t.charAt(0).toUpperCase() + t.slice(1) : "All"}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* All Posts */}
+        <div>
+          <h2 className="text-2xl font-semibold mb-4">🗃️ All Posts</h2>
+          {posts.length === 0 ? (
+            <p className="text-gray-500 dark:text-gray-400">
+              No posts available.
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {posts.map((post, i) => (
+                <div
+                  key={i}
+                  className="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-md border dark:border-gray-700"
+                >
+                  <h3 className="text-lg text-white  font-semibold mb-2">
+                    {post.title}
+                  </h3>
+                  <p className="text-white">{post.content}</p>
+                  <span className="text-sm text-blue-500">{post.topic}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Modal */}
+      {isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-md relative">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-red-500"
+            >
+              <FiX size={20} />
+            </button>
+            <h2 className="text-xl font-bold mb-4">Create New Post</h2>
+            <input
+              type="text"
+              placeholder="Title"
+              value={newPost.title}
+              onChange={(e) =>
+                setNewPost({ ...newPost, title: e.target.value })
+              }
+              className="w-full mb-3 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <textarea
+              placeholder="Content"
+              value={newPost.content}
+              onChange={(e) =>
+                setNewPost({ ...newPost, content: e.target.value })
+              }
+              className="w-full mb-3 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows={4}
+            />
+            <select
+              value={newPost.topic}
+              onChange={(e) =>
+                setNewPost({ ...newPost, topic: e.target.value })
+              }
+              className="w-full mb-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Select Topic</option>
+              <option value="tech">Tech</option>
+              <option value="lifestyle">Lifestyle</option>
+            </select>
+            <button
+              onClick={handleAddPost}
+              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+            >
+              Add Post
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default Page;
